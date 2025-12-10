@@ -1,5 +1,7 @@
-
-html, body, #root {
+/* -----------------------
+   1. 전체 레이아웃 설정 (푸터 고정을 위한 기초)
+------------------------ */
+html, body {
   height: 100%;
   margin: 0;
 }
@@ -7,22 +9,23 @@ html, body, #root {
 #root {
   display: flex;
   flex-direction: column;
+  min-height: 100vh; /* 화면 전체 높이 사용 */
 }
 
-/* 메인 콘텐츠는 남는 공간을 자동으로 채움 */
-main {
-  flex: 1;
-}
-
-/* 기본 폰트 */
 body {
-  margin: 0;
   background: #f8f9fa;
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
   color: #212529;
 }
 
-/* Velog 스타일 헤더 */
+a {
+  color: #12b886;
+  text-decoration: none;
+}
+
+/* -----------------------
+   2. 헤더 스타일
+------------------------ */
 header {
   position: fixed;
   top: 0;
@@ -31,70 +34,33 @@ header {
   background: white;
   border-bottom: 1px solid #e9ecef;
   display: flex;
-  justify-content: center; /* 핵심: 가운데 정렬 */
+  justify-content: center;
   z-index: 10;
-}
-
-/* 헤더 로고 */
-.logo {
-  font-size: 22px;
-  font-weight: 700;
-  color: #12b886;
-  text-decoration: none;
-}
-
-/* 헤더 메뉴 */
-header nav a {
-  margin-left: 24px;
-  color: #495057;
-  font-size: 16px;
-  text-decoration: none;
-}
-
-header nav a:hover {
-  color: #12b886;
 }
 
 .header-inner {
   width: 1136px;
   display: flex;
-  justify-content: space-between; /* 좌측 로고 / 우측 메뉴 */
+  justify-content: space-between;
   align-items: center;
-  padding: 0 16px; /* 여백 필수 */
+  padding: 0 16px;
 }
 
-/* 메인 컨테이너 중앙 정렬 */
-.main-container {
-  max-width: 768px;
-  margin: 100px auto 60px; /* 헤더(64px) + 여백 고려 */
-  padding: 0 20px;
-}
-
-.nav-menu a {
-  margin-left: 24px;
-  font-size: 16px;
-  color: #495057;
-  text-decoration: none;
-}
-
-.nav-menu a:hover {
+.logo {
+  font-size: 22px;
+  font-weight: 700;
   color: #12b886;
 }
 
 .nav {
   display: flex;
   align-items: center;
-  gap: 20px;  /* ← 메뉴 간 간격을 자동으로 띄워줌 */
+  gap: 20px;
 }
 
 .nav a {
-  text-decoration: none;
-  color: #333;
   font-size: 15px;
-}
-
-.nav span {
-  color: #444;
+  color: #333;
 }
 
 .logout-btn {
@@ -105,15 +71,23 @@ header nav a:hover {
   cursor: pointer;
 }
 
-/* 링크 색상 */
-a {
-  color: #12b886;
-  text-decoration: none;
+/* -----------------------
+   3. 메인 컨텐츠 영역 (푸터 밀어내기 핵심)
+------------------------ */
+.main-container {
+  flex: 1; /* [핵심] 남은 빈 공간을 모두 차지하여 푸터를 바닥으로 밀어냄 */
+  width: 100%;
+  max-width: 768px;
+  margin: 100px auto 60px; /* 상단 헤더 공간 확보 */
+  padding: 0 20px;
+  box-sizing: border-box; /* 패딩 포함 크기 계산 */
 }
 
-/* 글 목록 */
+/* -----------------------
+   4. 글 목록 스타일
+------------------------ */
 .post-list {
-  list-style-type: none;
+  list-style: none;
   padding: 0;
 }
 
@@ -145,7 +119,6 @@ a {
   color: #868e96;
 }
 
-/* 글쓰기 버튼 */
 .btn-write {
   display: inline-block;
   margin-bottom: 24px;
@@ -160,67 +133,28 @@ a {
   background: #0fa67a;
 }
 
+/* -----------------------
+   5. 글 상세 페이지
+------------------------ */
 .post-detail-container {
-  width: 80%;
+  width: 100%; /* 너비 꽉 차게 */
   max-width: 900px;
   margin: 0 auto;
-  padding-top: 50px;
 }
 
-.post-detail-title {
-  font-size: 32px;
-  font-weight: bold;
-  margin-bottom: 14px;
+.post-detail-header {
+  margin-bottom: 32px;
+  text-align: center; /* 제목 가운데 정렬 */
 }
 
-.post-detail-info {
-  color: #666;
-  margin-bottom: 24px;
-}
-
-.post-detail-content {
-  font-size: 18px;
-  line-height: 1.6;
-  white-space: pre-wrap;
-  margin-bottom: 40px;
-}
-
-.post-detail-buttons {
-  display: flex;
-  gap: 14px;
-}
-
-.edit-btn {
-  background: #12b886;
-  color: white;
-  padding: 10px 18px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.delete-btn {
-  background: #fa5252;
-  color: white;
-  padding: 10px 18px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-/* 글 상세 */
+/* [핵심] 제목 스타일 수정 */
 .post-detail-title {
   font-size: 36px;
   font-weight: 700;
-  margin-bottom: 12px;
-}
-
-.post-detail-date {
-  font-size: 14px;
-  color: #868e96;
-  margin-bottom: 32px;
+  margin: 0;
+  line-height: 1.4;
+  word-break: keep-all; /* [핵심] 한글 단어 중간에 줄바꿈 방지 */
+  width: 100%;
 }
 
 .post-detail-content {
@@ -228,4 +162,58 @@ a {
   line-height: 1.75;
   color: #212529;
   white-space: pre-line;
+  margin-bottom: 40px;
+}
+
+/* -----------------------
+   6. 헤더 상단 고정 그룹 (작성자 + 버튼)
+------------------------ */
+.post-header-action-group {
+  position: fixed;
+  top: 70px;
+  height: 64px;
+  z-index: 100;
+  
+  /* 화면 중앙 기준 배치 */
+  left: 50%;
+  margin-left: 180px; /* 오른쪽으로 밀기 */
+
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.post-header-action-group.only-text {
+  margin-left: 320px; 
+}
+
+.header-info-text {
+  font-size: 14px;
+  color: #495057;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.header-btn-box {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-btn, .delete-btn {
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+}
+
+.edit-btn {
+  background: #12b886;
+  color: white;
+}
+
+.delete-btn {
+  background: #fa5252;
+  color: white;
 }

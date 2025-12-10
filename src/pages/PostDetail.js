@@ -34,7 +34,6 @@ function PostDetail() {
       alert("본인만 삭제 가능합니다.");
       return;
     }
-
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
     await deleteDoc(doc(db, "posts", id));
@@ -42,83 +41,41 @@ function PostDetail() {
     navigate("/posts");
   };
 
-  return (
+return (
     <div className="main-container">
-      {/* 제목 + 수정/삭제 버튼 한 줄 정렬 */}
-      <div style={headerRow}>
-        <h2 style={titleStyle}>{post.title}</h2>
+      <div className="post-detail-container">
+        
+        {/* ▼▼▼ [수정] 클래스 이름 부분 변경 ▼▼▼ */}
+        {/* 버튼이 없으면(작성자가 아니면) 'only-text' 클래스를 추가합니다 */}
+        <div className={`post-header-action-group ${!isAuthor ? 'only-text' : ''}`}>
+          
+          <span className="header-info-text">
+            {post.authorName} · {post.createdAt?.toDate().toLocaleString()}
+          </span>
 
-        {isAuthor && (
-          <div style={buttonRow}>
-            <button
-              style={editBtn}
-              onClick={() => navigate(`/edit/${id}`)}
-            >
-              수정하기
-            </button>
+          {isAuthor && (
+            <div className="header-btn-box">
+              <button className="edit-btn" onClick={() => navigate(`/edit/${id}`)}>
+                수정하기
+              </button>
+              <button className="delete-btn" onClick={handleDelete}>
+                삭제하기
+              </button>
+            </div>
+          )}
+        </div>
+        {/* ▲▲▲ 수정 끝 ▲▲▲ */}
 
-            <button style={deleteBtn} onClick={handleDelete}>
-              삭제하기
-            </button>
-          </div>
-        )}
-      </div>
+        <div className="post-detail-header">
+          <h2 className="post-detail-title">{post.title}</h2>
+        </div>
 
-      {/* 작성 정보 */}
-      <p style={{ color: "#666" }}>
-        {post.authorName} · {post.createdAt?.toDate().toLocaleString()}
-      </p>
-
-      {/* 본문 */}
-      <div style={{ marginTop: "40px", fontSize: "18px" }}>
-        {post.content}
+        <div className="post-detail-content">
+          {post.content}
+        </div>
       </div>
     </div>
   );
 }
 
 export default PostDetail;
-
-/* ---------------------------------------
-   스타일 (컴포넌트 내부에만 적용되는 인라인 스타일)
------------------------------------------ */
-const headerRow = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  width: "80%",
-  maxWidth: "900px",
-  margin: "0 auto 20px",
-};
-
-const titleStyle = {
-  fontSize: "32px",
-  fontWeight: "700",
-  margin: 0,
-};
-
-const buttonRow = {
-  display: "flex",
-  gap: "10px",
-};
-
-const sharedBtn = {
-  padding: "10px 22px",
-  minWidth: "90px",
-  color: "white",
-  border: "none",
-  borderRadius: "6px",
-  cursor: "pointer",
-  fontSize: "15px",
-  fontWeight: "600",
-};
-
-const editBtn = {
-  ...sharedBtn,
-  backgroundColor: "#12b886",
-};
-
-const deleteBtn = {
-  ...sharedBtn,
-  backgroundColor: "#fa5252",
-};
