@@ -1,18 +1,34 @@
 import { Link } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase/auth";
+import useAuth from "../hooks/useAuth";
 
 function Header() {
-  return (
-    <header>
-      <div className="header-inner">
-        <Link to="/" className="logo">
-          MyBlog
-        </Link>
+  const { user } = useAuth();
 
-        <nav className="nav-menu">
+  return (
+    <header className="header">
+      <div className="header-inner">
+        <Link to="/" className="logo">MyBlog</Link>
+
+        <nav className="nav">
           <Link to="/posts">Posts</Link>
-          <Link to="/write">Write</Link>
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Signup</Link>
+
+          {user ? (
+            <>
+              <Link to="/write">Write</Link>
+              <Link to="/myposts">My Posts</Link>
+              <span>{user.displayName}님</span>
+              <button className="logout-btn" onClick={() => signOut(auth)}>
+                로그아웃
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login">Login</Link>
+              <Link to="/signup">Signup</Link>
+            </>
+          )}
         </nav>
       </div>
     </header>

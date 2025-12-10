@@ -12,6 +12,7 @@ function Login() {
   const handleLogin = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
+
       alert("로그인 성공!");
       navigate("/");
     } catch (error) {
@@ -20,7 +21,7 @@ function Login() {
   };
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <div className="main-container" style={{ textAlign: "center" }}>
       <h2>로그인</h2>
 
       <input
@@ -28,35 +29,40 @@ function Login() {
         placeholder="이메일"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        style={{ marginBottom: "10px", padding: "10px", width: "250px" }}
+        style={inputStyle}
       />
-
-      <br />
 
       <input
         type="password"
         placeholder="비밀번호"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        style={{ marginBottom: "10px", padding: "10px", width: "250px" }}
+        style={inputStyle}
       />
 
-      <br />
-
-      <button
-        onClick={handleLogin}
-        style={{
-          padding: "10px 20px",
-          backgroundColor: "#4a4aff",
-          color: "#fff",
-          borderRadius: "6px",
-          border: "none",
-        }}
-      >
+      <button style={buttonStyle} onClick={handleLogin}>
         로그인
       </button>
     </div>
   );
 }
+
+const inputStyle = {
+  marginBottom: "12px",
+  padding: "10px",
+  width: "260px",
+  display: "block",
+  marginLeft: "auto",
+  marginRight: "auto",
+};
+
+const buttonStyle = {
+  padding: "10px 20px",
+  backgroundColor: "#12b886",
+  color: "white",
+  border: "none",
+  borderRadius: "6px",
+  cursor: "pointer",
+};
 
 export default Login;

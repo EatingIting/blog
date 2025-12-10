@@ -1,12 +1,15 @@
 function Footer() {
   return (
-    <footer style={{
-      textAlign: "center",
-      marginTop: "40px",
-      padding: "20px 0",
-      color: "#868e96",
-      fontSize: "14px"
-    }}>
+    <footer
+      style={{
+        textAlign: "center",
+        padding: "20px 0",
+        color: "#868e96",
+        fontSize: "14px",
+        borderTop: "1px solid #e9ecef",
+        background: "white"
+      }}
+    >
       © 2025 My Blog
     </footer>
   );

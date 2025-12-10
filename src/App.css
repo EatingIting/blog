@@ -1,3 +1,19 @@
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 메인 콘텐츠는 남는 공간을 자동으로 채움 */
+main {
+  flex: 1;
+}
+
 /* 기본 폰트 */
 body {
   margin: 0;
@@ -65,6 +81,30 @@ header nav a:hover {
   color: #12b886;
 }
 
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;  /* ← 메뉴 간 간격을 자동으로 띄워줌 */
+}
+
+.nav a {
+  text-decoration: none;
+  color: #333;
+  font-size: 15px;
+}
+
+.nav span {
+  color: #444;
+}
+
+.logout-btn {
+  background: none;
+  border: 1px solid #bbb;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 /* 링크 색상 */
 a {
   color: #12b886;
@@ -118,6 +158,56 @@ a {
 
 .btn-write:hover {
   background: #0fa67a;
+}
+
+.post-detail-container {
+  width: 80%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding-top: 50px;
+}
+
+.post-detail-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 14px;
+}
+
+.post-detail-info {
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.post-detail-content {
+  font-size: 18px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  margin-bottom: 40px;
+}
+
+.post-detail-buttons {
+  display: flex;
+  gap: 14px;
+}
+
+.edit-btn {
+  background: #12b886;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.delete-btn {
+  background: #fa5252;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
 }
 
 /* 글 상세 */

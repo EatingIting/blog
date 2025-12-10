@@ -1,77 +1,94 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase/db";
+import useAuth from "../hooks/useAuth";
+import { uploadImage } from "../firebase/storage";
+
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Image from "@tiptap/extension-image";
 
 function Write() {
   const navigate = useNavigate();
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const { user } = useAuth();
 
-  const handleSave = () => {
-    if (!title.trim() || !content.trim()) {
-      alert("제목과 내용을 모두 입력해주세요.");
+  const [title, setTitle] = useState("");
+
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Image,
+    ],
+    content: "",
+  });
+
+  const addImage = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const url = await uploadImage(file);
+
+    editor.chain().focus().setImage({ src: url }).run();
+  };
+
+  const savePost = async () => {
+    if (!user) {
+      alert("로그인이 필요합니다.");
       return;
     }
 
-    const newPost = {
-      id: Date.now().toString(),
+    await addDoc(collection(db, "posts"), {
       title,
-      content
-    };
+      content: editor.getJSON(),
+      authorId: user.uid,
+      authorName: user.displayName,
+      createdAt: serverTimestamp(),
+    });
 
-    const savedPosts = JSON.parse(localStorage.getItem("posts") || "[]");
-    savedPosts.unshift(newPost);
-
-    localStorage.setItem("posts", JSON.stringify(savedPosts));
-
-    navigate(`/posts/${newPost.id}`);
+    alert("저장되었습니다!");
+    navigate("/posts");
   };
 
   return (
-    <div>
+    <div className="main-container" style={{ width: "800px", margin: "0 auto" }}>
       <h2>글쓰기</h2>
 
-      <div style={{ marginBottom: "20px" }}>
-        <input
-          type="text"
-          placeholder="제목을 입력하세요"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          style={{
-            width: "100%",
-            padding: "10px",
-            fontSize: "18px",
-            marginBottom: "15px"
-          }}
-        />
+      {/* 제목 입력 */}
+      <input
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="제목"
+        style={{
+          width: "100%",
+          padding: "12px",
+          fontSize: "18px",
+          marginBottom: "20px",
+        }}
+      />
 
-        <textarea
-          placeholder="내용을 입력하세요"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          style={{
-            width: "100%",
-            height: "300px",
-            padding: "10px",
-            fontSize: "16px",
-            lineHeight: "1.6"
-          }}
-        />
+      {/* 이미지 업로드 버튼 */}
+      <input type="file" accept="image/*" onChange={addImage} />
 
-        <button 
-          onClick={handleSave}
-          style={{
-            marginTop: "15px",
-            padding: "10px 20px",
-            fontSize: "16px",
-            background: "#4a4aff",
-            color: "white",
-            border: "none",
-            borderRadius: "6px"
-          }}
-        >
-          저장
-        </button>
+      {/* TipTap 에디터 */}
+      <div style={{ border: "1px solid #ddd", marginTop: "10px", padding: "10px" }}>
+        <EditorContent editor={editor} />
       </div>
+
+      <button
+        onClick={savePost}
+        style={{
+          marginTop: 20,
+          background: "#12b886",
+          padding: "12px 24px",
+          border: "none",
+          color: "white",
+          borderRadius: 6,
+          cursor: "pointer",
+        }}
+      >
+        저장하기
+      </button>
     </div>
   );
 }
